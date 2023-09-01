@@ -1,0 +1,103 @@
+function setFields() {
+    if (supportType == 'ithc_supported') {
+        setSupportGroupValue();
+    } else if (supportType == 'support_department') {
+        pspGr.setValue('support_department', supportDepartment);
+        pspGr.setValue('department_email', departmentEmail);
+        pspGr.setValue('department_phone', departmentPhone);
+    } else {
+        pspGr.setValue('support_person', supportPerson);
+        pspGr.setValue('vacant', vacant);
+    }
+    pspGr.setValue('backup_desktop', backupDesktop);
+}
+
+function setSupportGroupValue() {
+    if (supportGroup == 'dedicated_on-site') {
+        pspGr.setValue('support_group', 'Dedicated_On_Site');
+    } else if (supportGroup == 'desktop') {
+        pspGr.setValue('support_group', 'Desktop');
+    } else {
+        pspGr.setValue('support_group', 'Executive');
+    }
+}
+
+function checkExisting() {
+    pspGr.addQuery('department.id', depId);
+    pspGr.addQuery('type', supportType);
+    pspGr.addQuery('support_department', supportDepartment);
+    pspGr.addQuery('department_email', departmentEmail);
+    pspGr.addQuery('department_phone', departmentPhone);
+    pspGr.addQuery('support_person', supportPerson);
+    pspGr.addQuery('backup_desktop', backupDesktop);
+    pspGr.addQuery('vacant', vacant);
+    pspGr.query();
+    if (pspGr.next()) {
+        var comments = " Already a record exists";
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function ithcGroup() {
+    var groupIs;
+    if (supportType == 'ithc_supported') {
+        if (supportGroup == 'dedicated_on-site') {
+            groupIs = 'Dedicated_On_Site';
+        } else if (supportGroup == 'desktop') {
+            groupIs = 'Desktop';
+        } else {
+            groupIs = 'Executive';
+        }
+        pspGr.addQuery('support_group', groupIs);
+        pspGr.query();
+        if (!pspGr.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
+}
+var ritmGr = new GlideRecord('sc_req_item');
+ritmGr.addQuery('request', '686eb12c875cfd509a3a539d3fbb350a');
+ritmGr.query();
+while (ritmGr.next()) {
+    var reqType = ritmGr.variables.request_type;
+    var department = ritmGr.variables.department;
+    var depId = department.id;
+    var supportDepartment = ritmGr.variables.support_department;
+    var supportGroup = ritmGr.variables.support_group;
+    var supportPerson = ritmGr.variables.support_person;
+    var backupDesktop = ritmGr.variables.backup_desktop;
+    var departmentEmail = ritmGr.variables.department_email;
+    var departmentPhone = ritmGr.variables.department_phone;
+    var vacant = ritmGr.variables.vacant;
+    var entry = ritmGr.variables.entry;
+    var supportType = ritmGr.variables.support_type;
+    var pspGr = new GlideRecord('x_ttuit_primary_su_primary_support_providers');
+    pspGr.addQuery('department', department);
+    if (reqType == 'add' && ithcGroup() && checkExisting()) {
+        pspGr.initialize();
+        pspGr.setValue('department', department);
+        pspGr.setValue('department.id', depId);
+        pspGr.setValue('type', supportType);
+        setFields();
+        pspGr.insert();
+    } else {
+        pspGr.addQuery('sys_id', entry);
+        pspGr.query();
+        while (pspGr.next()) {
+            if (reqType == 'modify') {
+                pspGr.setValue('type', supportType);
+                setFields();
+                pspGr.update();
+                gs.info("modify psp");
+            } else if (reqType == 'remove') {
+                pspGr.deleteRecord();
+            }
+        }
+    }
+}
