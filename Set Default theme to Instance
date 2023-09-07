@@ -1,0 +1,3 @@
+Implementation Steps:
+1. Go to the user preference table, open the 'glide.ui.polaris.theme.variant' record.
+2. Update the Value with the sys_id of the colors theme (stored in sys_ux_style).
