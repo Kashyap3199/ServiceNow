@@ -1,0 +1,7 @@
+Show Related List
+g_form.sh­owR­ela­ted­Lis­t(<­rel­ate­dli­stt­abl­ena­me>)*
+Hide Related List
+g_form.hi­deR­ela­ted­Lis­t(<­rel­ate­dli­stt­abl­ena­me>)
+Show All Related Lists
+g_form.sh­owR­ela­ted­Lis­ts();
+Hide All Related Lists
