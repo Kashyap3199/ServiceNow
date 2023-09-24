@@ -1,0 +1,9 @@
+Problem:
+
+I have changed the field from Reference type to List type but now I want to revert this back to Reference type only but the system does not allow me to change the field type.
+
+Solution:
+
+Step1 - Change the data type from 'List' to 'String' - It will take 3-4 hours to reflect this change considering the volume of the data.
+
+Step2 - Once the step 1 change is reflected in the dictionary entry, change the data type from 'String' to 'Reference'
