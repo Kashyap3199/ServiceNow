@@ -39,6 +39,48 @@ function getSysID(usersArray) {
 
 
 
+psudeo code:
+var users = [];
+var flag = new GlideRecord("sn_coaching_assessment");
+flag.initialize();
+var record = '5707b761dbd9f51000b41b5813961950';
+var usersArray = getDetails(record);
+var user_id = getSysID(usersArray);
+gs.info("id"+user_id);
+flag.assessment_of = user_id;
+gs.info("flagged"+flag.assessment_of);
+//action.openGlideRecord(flag);
+//}
 
+function getDetails(record) {
+    var userBeingFlagged = [];
+    var audit_gr = new GlideRecord('sys_audit');
+    audit_gr.addQuery('documentkey', record);
+    audit_gr.query();
+    while (audit_gr.next()) {
+        userBeingFlagged.push(audit_gr.sys_created_by.toString());
+    }
+    var arrayUtil = new ArrayUtil();
+    userBeingFlagged = arrayUtil.unique(userBeingFlagged);
+    return userBeingFlagged.toString();
+}
+
+function getSysID(usersArray) {
+    var userRec = [];
+    var test=usersArray.split(',');
+    for (var i = 0; i < test.length; i++) {
+        var Temp = test[i].toString();
+        var userId = new GlideRecord('sys_user');
+        userId.addQuery('roles=it');
+        userId.addQuery('user_name',Temp);
+        userId.query();
+        while (userId.next()) {
+            userRec.push(userId.sys_id.toString());
+        }
+}
+gs.info(userRec);
+        return 'sys_idIN' + userRec.toString();
+    
+}
 
 
