@@ -1,0 +1,44 @@
+var users = [];
+var flag = new GlideRecord("sn_coaching_assessment");
+flag.initialize();
+var record = 'fdec554adbddb1106ad4185b13961999';
+var usersArray = getDetails(record);
+var user_id = getSysID(usersArray);
+flag.assessment_of = user_id;
+action.openGlideRecord(flag);
+}
+
+function getDetails(record) {
+    var userBeingFlagged = [];
+    var audit_gr = new GlideRecord('sys_audit');
+    audit_gr.addQuery('documentkey', record);
+    audit_gr.query();
+    while (audit_gr.next()) {
+        userBeingFlagged.push(audit_gr.sys_created_by.toString());
+    }
+    var arrayUtil = new ArrayUtil();
+    userBeingFlagged = arrayUtil.unique(userBeingFlagged);
+    return userBeingFlagged.toString();
+}
+
+function getSysID(usersArray) {
+    var userRec = [];
+    var test=usersArray.split(',');
+    for (var i = 0; i < test.length; i++) {
+        var Temp = test[i].toString();
+        var userId = new GlideRecord('sys_user');
+        userId.addQuery('roles=it');
+        userId.addQuery('user_name',Temp);
+        userId.query();
+        while (userId.next()) {
+            userRec.push(userId.sys_id.toString());
+        }
+        return 'sys_idIN' + userRec.toString();
+    }
+}
+
+
+
+
+
+
