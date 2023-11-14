@@ -1,26 +1,27 @@
-get_record_WatchList_Company: function() {
+ get_record_WatchList_Company: function() {
         var recID = this.getParameter('sysparm_recordId');
-		gs.info("record Id is"+recID);
+        gs.info("record Id is" + recID);
         var usersList = this.getParameter('sysparm_watchlist');
-		gs.info("users list are"+ usersList);
+        gs.info("users list are" + usersList);
         var recCompany = '';
-		var isTrue = true;
+        var isFalse = true;
         var ritmGr = new GlideRecord('sc_req_item');
         ritmGr.addQuery('sys_id', recID);
         ritmGr.query();
         if (ritmGr.next()) {
-			gs.info("company is "+ ritmGr.company);
+            gs.info("company is " + ritmGr.company);
             recCompany = ritmGr.company;
         }
         var watchListCompany = this.getWatchListUsersCompany(usersList);
-		gs.info("calling"+ watchListCompany);
-		if(recCompany == watchListCompany){
-			return isTrue;
-		}
+        gs.info("calling" + watchListCompany);
+        if (recCompany != watchListCompany) {
+            return isFalse;
+        }
     },
-	
+
     getWatchListUsersCompany: function(usersList) {
         var userIds = usersList.split(',');
+        var userRec = [];
         for (var i = 0; i < userIds.length; i++) {
             var userGr = new GlideRecord('sys_user');
             userGr.addQuery('sys_id', userIds[i]);
@@ -28,9 +29,12 @@ get_record_WatchList_Company: function() {
             while (userGr.next()) {
                 var userCompany = userGr.getValue('company');
                 if (userCompany != null) {
-                    return userGr.company;
+                    userRec.push(userCompany);
                 }
             }
-
         }
+        var arrayUtil = new global.ArrayUtil();
+        var userList = arrayUtil.unique(userRec); //getting uniqe user ids who made changes to the records
+        var usersArray = userList.toString();
+        return usersArray.toString();
     },
