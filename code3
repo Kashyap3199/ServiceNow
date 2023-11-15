@@ -14,7 +14,7 @@
         }
         var watchListCompany = this.getWatchListUsersCompany(usersList);
         gs.info("calling" + watchListCompany);
-        if (recCompany != watchListCompany) {
+        if (recCompany == watchListCompany) {
             return isFalse;
         }
     },
