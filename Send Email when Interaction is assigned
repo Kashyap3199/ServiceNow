@@ -1,0 +1,26 @@
+(function executeRule(current, previous /*null when async*/ ) {
+    var assignmentGroup = current.assignment_group.getDisplayValue();
+    var assignmentGroupEmail = current.assignment_group.email;
+    if (assignmentGroupEmail == '') {
+        var groupMemberMailIds = '';
+        var groupMemberGr = new GlideRecord("sys_user_grmember");
+        groupMemberGr.addQuery("group.name", assignmentGroup); // give the assignment group name
+        groupMemberGr.addEncodedQuery("user.emailISNOTEMPTY");
+        groupMemberGr.query();
+        while (groupMemberGr.next()) {
+            if (groupMemberMailIds != '') {
+                groupMemberMailIds += ',' + groupMemberGr.user.email;
+            } else {
+                groupMemberMailIds = groupMemberGr.user.email;
+            }
+        }
+    }
+    if (current.assigned_to != '') {
+        gs.eventQueue('interaction.assigned', current, current.assigned_to.email); //If assigned to is not empty, call event with assigned to as parameter
+    } else if (current.assignmentGroup != '' && assignmentGroupEmail != '') {
+        gs.eventQueue('interaction.assigned', current, current.assignment_group); //If assignment group is not empty, call event with assignment group as parameter  
+    } else if (current.assignmentGroup != '' && assignmentGroupEmail == '') {
+        gs.eventQueue('interaction.assigned', current, groupMemberMailIds); // If assignment group is not empty and group doesnot have email, send group members mail as paramter
+    }
+
+})(current, previous);
