@@ -1,0 +1,95 @@
+function onClick(g_form) {
+    
+	//Get the current Request's sys_id
+	var fields;
+	var request = g_form.getUniqueValue();
+	
+	//if the current user has the it_ithc_mgmt role, create field in modal window for Executive Request, else only have Duplicate field
+	if (g_user.hasRole('it_ithc_mgmt') == true) {
+		
+		fields = [{
+			type: 'choice',
+			name: 'u_cancel_reason',
+			label: getMessage('Cancel Reason'),
+			value: '',
+			choices: [{
+					displayValue: 'Duplicate',
+					value: '1'
+				},
+				{
+					displayValue: 'Executive Request',
+					value: '2'
+				}
+			],
+			mandatory: true
+		}];
+		
+	} else {
+		
+		fields = [{
+			type: 'choice',
+			name: 'u_cancel_reason',
+			label: getMessage('Cancel Reason'),
+			value: '',
+			choices: [{
+					displayValue: 'Duplicate',
+					value: '1'
+				},
+			],
+			mandatory: true
+		}];
+	}
+	
+    var fields2 = [{
+        type: 'reference',
+        name: 'parent',
+        label: getMessage('Parent'),
+        mandatory: true,
+        reference: 'task',
+        referringTable: 'task',
+        referringRecordId: g_form.getUniqueValue()
+    }];
+
+    g_modal.showFields({
+        title: "Enter your reason",
+        fields: fields,
+        size: 'lg'
+    }).then(function(fieldValues) {
+        if (fieldValues.updatedFields[0].value == 1) {
+            g_modal.showFields({
+                title: "Enter your reason",
+                fields: fields2,
+                size: 'lg'
+            }).then(function(fieldValues2) {
+			//Set value of form fields based on modal field values
+                g_form.setValue('u_cancel_reason', fieldValues.updatedFields[0].value);
+                g_form.setValue('parent', fieldValues2.updatedFields[0].value);
+				g_form.setValue('request_state','closed_incomplete');
+				g_form.save();
+			//Call TTURequestUtils script include to update all child records
+				var ga = new GlideAjax('TTURequestUtils');
+				ga.addParam('sysparm_name', "cancelRequest");
+				ga.addParam('sysparm_request', request);
+				ga.getXML(GetAnswer);
+				
+            });
+        } else {
+			//Set value of form fields based on modal field values
+            g_form.setValue('u_cancel_reason', fieldValues.updatedFields[0].value);
+			g_form.setValue('request_state','closed_incomplete');
+			g_form.save();
+			//Call TTURequestUtils script include to update all child records
+			var ga = new GlideAjax('TTURequestUtils');
+			ga.addParam('sysparm_name', "cancelRequest");
+			ga.addParam('sysparm_request', request);
+			ga.getXML(GetAnswer);	
+			
+        }
+
+    });	
+	
+}
+
+function GetAnswer(response) {
+  var answer = response.responseXML.documentElement.getAttribute("answer");
+}
