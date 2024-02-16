@@ -1,0 +1,33 @@
+var taskPlanUtils = Class.create();
+taskPlanUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+    get_email_accounts: function() {
+		var wlist= this.getParameter('sysparm_watchlist');
+		gs.info("watch list is " +wlist);
+        var emailAccountList = [];
+        var instanceEmail = new GlideRecord('sys_email_account');
+        instanceEmail.query();
+        while (instanceEmail.next()) {
+            var email = instanceEmail.user_name.toString();
+            emailAccountList.push(email);
+        }
+        var emailString = emailAccountList.toString();
+        var watchListArray = wlist.split(",");
+        var finalWatchListArray = [];
+        var finalEmailArray = [];
+        for (var i = 0; i < watchListArray.length; i++) {
+            if (emailString.indexOf(watchListArray[i]) == -1) {
+                finalWatchListArray.push(watchListArray[i]);
+            } else {
+                finalEmailArray.push(watchListArray[i]);
+            }
+        }
+		var obj = {};
+        obj.result1 = finalWatchListArray.join(",");
+		obj.result2 = finalEmailArray.join(",");
+// 		var finalResult={0:result1,1:result2};
+        //gs.info("final is"+ finalResult);
+		return JSON.stringify(obj);
+
+    },
+    type: 'taskPlanUtils'
+});
