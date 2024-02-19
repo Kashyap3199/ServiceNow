@@ -1,0 +1,2 @@
+Avoid running out of memory due to storing dot-walked GlideElement fields
+One issue that happens often is when someone stores an object reference in an array when they really only need to store a primitive data type. They might do this unintentionally or they might not realize the impact it is having. For example, the following code stores a GlideElement object when only a simple String type is needed.
