@@ -1,2 +1,17 @@
+charAt(): It provides the char value present at the specified index.
+charCodeAt(): It provides the Unicode value of a character present at the specified index.
+concat(): It provides a combination of two or more strings.
+indexOf(): It provides the position of a char value present in the given string.
+lastIndexOf(): It provides the position of a char value present in the given string by searching for a character from the last position.
+Search(): It searches a specified regular expression in a given string and returns its position if a match occurs.
+match(): It searches a specified regular expression in a given string and returns that regular expression if a match occurs.
+replace(): It replaces a given string with the specified replacement.
+substr(): It is used to fetch the part of the given string based on the specified starting position and length.
+substring(): It is used to fetch the part of the given string based on the specified index.
+slice(): It is used to fetch the part of the given string. It allows us to assign positive as a well negative indexes.
+toLowerCase(): It converts the given string into a lowercase letter.
+toLocaleLowerCase(): It converts the given string into a lowercase letter based on the host's current locale.
+
+
 Avoid running out of memory due to storing dot-walked GlideElement fields
 One issue that happens often is when someone stores an object reference in an array when they really only need to store a primitive data type. They might do this unintentionally or they might not realize the impact it is having. For example, the following code stores a GlideElement object when only a simple String type is needed.
