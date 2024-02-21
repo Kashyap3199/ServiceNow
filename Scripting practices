@@ -11,6 +11,7 @@ substring(): It is used to fetch the part of the given string based on the speci
 slice(): It is used to fetch the part of the given string. It allows us to assign positive as a well negative indexes.
 toLowerCase(): It converts the given string into a lowercase letter.
 toLocaleLowerCase(): It converts the given string into a lowercase letter based on the host's current locale.
+length() : to find the length
 
 
 Avoid running out of memory due to storing dot-walked GlideElement fields
