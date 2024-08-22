@@ -1,3 +1,4 @@
+Script include with array
 var taskPlanUtils = Class.create();
 taskPlanUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
     get_email_accounts: function() {
