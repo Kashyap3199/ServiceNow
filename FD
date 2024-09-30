@@ -1,0 +1,26 @@
+flow designer: to do automation process, like using integration hub, creating tasks/ approvals/notifications. 
+
+benefits: platform automation, reusable components.
+
+
+use flow diagramming plugin to view complex flow logic
+
+components: 4
+1. flow: has a trigger, it is automated process consisting of sequence actions.
+2. sub flow: no triggr, we use them in a flow. these have resuable actions, has input and output variables
+
+3. action : enables process analytics like create task, approvals. we can create actions or use oob actions. can be used in flows and sub flows.
+4. spoke: it is a scope application containing flow designer actions, sub flows for managing specific tables.
+
+
+Flows
+A flow is an automated process consisting of a trigger and a sequence of actions. Flows automate business logic for a particular application or process. For example, the VTB Sample Flow creates and assigns a VTB card whenever a priority 1 incident is created. Building and managing flows require that you have some familiarity with the Now Platform tables and fields that the application or process uses. Process analysts can create flows using available actions or copy an existing flow to use it as a template.
+
+Subflows
+A subflow is an automated process consisting of a sequence of reusable actions, data inputs, and outputs. In contrast to flows, subflows do not have a trigger but instead run within a flow, another subflow, or a script. Building and managing subflows requires that you have some familiarity with the Now Platform tables and fields that the application or process uses. Process analysts can create subflows using available actions or use an existing subflow as a template.
+
+Actions
+An action is a reusable operation that enables process analysts to automate Now Platform features without having to write code. For example, the Create Record action allows process analysts to generate records in a particular table with particular values when certain conditions occur. ServiceNow core actions like Create Record require some familiarity with Now Platform tables and fields. Action designers can create application-specific actions to pre-set configuration details. For example, creating a Create Incident Task action ensures that the process analyst uses the correct table and field configuration each time the action is used. You can add application-specific actions by activating the associated spoke.
+
+Action steps
+An action step or step is a single reusable operation within an action. For example, the Create Record step allows action designers to specify the table and field values to use during record creation. Action steps require subject matter expertise with application tables, fields, and business logic. 
