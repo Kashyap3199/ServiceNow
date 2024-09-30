@@ -1,0 +1,30 @@
+log files: used to debug on the platform
+
+types of log files:
+
+1. files on application nodes are called local host, threads and xml stats. which stores the transaction details
+
+2.files on the table are called logs or transaction logs
+
+3. mail server,load balancer and mid server
+
+
+Transaction logs: get values such as session, created by,system id (tells which node transaction happened on),URl. the 
+
+stats.do: shows info about instance name, cluster node (same as system id)
+
+deleted records are stored in sys_audit_delete table, if the table has audit set as true/
+
+if the system id from transaction log is same cluster node, go to the node log browser, else go to node log file downloader.
+
+
+Debug:
+
+two types: user session, global debug sessions.
+
+Client side debugging: in browser console
+javascriptexecutor ctrl+shift+J, alert(), jslog()-(log statement)
+
+server side debugging:
+gs.log :used for global app, writes msg on log table and local host log application node log, gs.print:used in bg scripts, displays msgs on browser screen, used in global app, write msgs to local host log , gs.debug: scoped app,writes msg on log table and local host log application node log
+
