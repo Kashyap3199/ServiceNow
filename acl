@@ -1,0 +1,46 @@
+Atleast one role is needed for non admins to see the data of a table. this is oob implementation of servicenow.
+
+ACL:
+
+table level or row level: None
+if there is a table, it has an acl at table level, and there is no condition/script/role . it allows all the users to view the data.
+
+if there is a role, then only the ppl with that role can see the data at the table level.
+
+Field level:
+if there is field level acl with user specified role, then users should have that required role in order to view that field.
+
+
+ex: 1.create a table, 2.create a table level acl with no role 3. create a field level acl with a specific role (i.e itil)
+
+now impersonate as 1.itil user (which has itil role), 2. abel (with no roles)
+
+because of the acls created table level and field levl, the itil user passes both the acls and can see the entire data. but the abel doesnot pass field level, so only views the data which doesn't have that field.
+
+Mystery of ACL:
+since, we know if there is no acl on a table, how does only admin can see the data, while the other's cant?
+
+in order to know that, enable debug security, impersonate as a non admin, open that table records list, u will find an acl " record/*/read" , this acl will does the job.  
+
+* : every field of the table
+
+table level is the first to execute, next the * level or field level.
+
+ 
+if there is no acl on the child, the parent table acl applies.
+
+ex:
+
+parent: acl- on table level, to show records to all users.
+child: acl- field level,to show that field only to a specific role
+
+now impersonate as a user which doesnot have the above mentioned specific role, now the user can the records but the field value is not shown.
+
+child level acl can override parent level
+
+acl color codes:
+grey: not revaluated, bcz some part of that is failing
+blue: cached
+
+wf_workflow_timing: to see workflow performance, have to enable a system property.
+
