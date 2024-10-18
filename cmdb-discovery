@@ -1,0 +1,86 @@
+CMDB : configuration management database, collection of CI's.
+def: database which contain all the relevant info about the CI and the information about their relationships to each other.
+
+cmdb_ci :  stores the CI's.
+class: child class, each class has its own table
+
+ci : can be physical entity (such as computer or router), logical entity (such as instance of db), conceptual (such as service). anything which is configurable or related to infrastructure is called CI.
+
+examples of CI: locations and offices, employees and customers, software's and applications, documentation, hardware.
+
+CI relationship: dependency btw two or more CIs which exist in real world and change in status of one may impact other.
+
+ex: a server is dependent on routers and switches. if any of the router or switch is damaged, it impacts the connectivity of server which ultimately results in delayed services to the customer.
+
+what happens with CI in CMDB:
+ci attrbtes are maintained, ci changes are tracked, ci's dependencies and relationships are maintained, ci's lifecycle is maintained.
+
+CMDB architecture:
+
+Getting Data using the any of below methods 
+
+1.discovery : scanning of all network devices, capturing the latest status of it. Horizontal level discovery.
+
+2.service mapping : advance level of discovery, discovering devices along with the applications. vertical level discovery.
+
+3.API : integration from any legacy tool or using api table/IRE/import sets.
+
+
+Processing engine: once we have data from the above mentioned methods, we have to process the data, so that will maintain accuracy and identity of the data. if same type of data is coming from 2 diff sources, we have to identify and update the database. using identification, reconciliation.
+
+Data out:
+the processed data can be accessed via these: ci class manager, health dashboard, dependency view, query builder, CMDB benchmark.
+
+real time challeneges of CMDB: 
+1. customization: CMDB has lot of data from diff sources, main challenge is to classify the CI's and relate them to respective items.
+2.representation : poor architecture
+3.ownership : lack of stakeholder collaboration and data ownership. whenever we see an CI, it needs to have an owning group, so that u can update attribute accurately.
+4. principles : lack of IT infrastructure library service management principles.
+5. informal CMDB: no formally defined services.
+
+CSDM: all about doing CMDB right by following the common service data model guidelines. It is way to collaborate between technical and functional part of CMDB. which is the inf we are getting data from devices, setting up that data and making it available for the ppl.
+
+Business process: set of related steps used to achieve a business goal. the business proves is a manually maintained CI that can identify criticality, both declared and determined, as well as impact to confidentiality, integrity and availability. BP can be reviewed monthly, quarterly, semi annually or annually.
+
+these are stored in the cmdb_ci_business_process table. 
+
+Product model: cmdb_model, these are not CI.
+contains products (to manage, track various applications). used to identify product owner, product status, compatibility with products.
+product models are extended into 7 base types : application, software, contract, facility, hardware, consumable service. products may be bundled to createa collection or group of products.
+
+CMDB group: collection of CI's based on the results of saved query builder queries, encoded queries or manual entries. the CMDB group isn't a CI.
+
+CMDB group provides a grouping of Ci's which you can use through the now platform.
+
+CMDB classifications: group of CI's that share attributes and are stored in their own class table. each class is a separate table. CI class can be dependent or independent.
+
+Independent CI: which exits on their own and are not dependent on any other CI's. Ex: servers CI's
+Dependent CI: which depend on a relationship to another CI and cant exist on their own in the absence of the dependent relationship. Ex: network adapter ci's cant exist without the hardware ci's.
+
+orphan ci:
+an application ci hosted on server ci.
+
+the discovery get in touch with server ci and also gets the application ci.
+
+if the server ci is deleted, the application ci exists without no way to be found.we do cascade rule to delete ci and its related ci's.
+
+
+how to create ci relationship:
+open ci > in the related items > click on ci relationship
+or
+go to the relationship table and create
+
+CMDB ci class manager:
+
+use CMDB ci class manager to create a ci class, update ire , to display ci relationship and configure CMDB health settings.
+click on hierarchy to show ci classes.
+select a class:
+we can see below :
+a. class info:
+1.basic info 2.attributes 3. Identification rules:
+indicates if a ci can be identified independently. they can be derived from parent. 4. reconciliation rules 5. suggested relationships
+b. all relationship rules :display all relations to this class
+c.health : 1.completeness 2.compliance 3. correctness
+d. ci list
+
+  
