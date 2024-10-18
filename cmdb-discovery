@@ -83,4 +83,7 @@ b. all relationship rules :display all relations to this class
 c.health : 1.completeness 2.compliance 3. correctness
 d. ci list
 
+Impacted ci: partially affected CI
+Affected CI: complete disruption
+
   
